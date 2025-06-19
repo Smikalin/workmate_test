@@ -21,7 +21,7 @@ from utils import (
 
 def read_csv(file_path: str) -> List[Dict[str, Any]]:
     """Читает CSV файл и возвращает список словарей."""
-    with open(file_path, "r", encoding="utf-8") as f:
+    with open(file_path, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         return list(reader)
 
@@ -37,8 +37,8 @@ def filter_data(
             value = value.strip('"')
             return get_filter_data(data, column, value)[operator]
     raise DataFilterError(
-        f"Неподдерживаемый оператор. "
-        f"Используйте: {', '.join(FILTER_OPERATORS)}"
+        f'Неподдерживаемый оператор. '
+        f'Используйте: {", ".join(FILTER_OPERATORS)}'
     )
 
 
@@ -47,11 +47,11 @@ def sort_data(
     condition: str,
 ) -> List[Dict[str, Any]]:
     """Сортирует данные в соответствии с условием."""
-    column, order = condition.split("=")
+    column, order = condition.split('=')
     return sorted(
         data,
         key=lambda row: get_key(row, column),
-        reverse=(order == "desc"),
+        reverse=(order == 'desc'),
     )
 
 
@@ -60,20 +60,20 @@ def aggregate_data(
     condition: str,
 ) -> List[Dict[str, Any]]:
     """Вычисляет агрегацию на основе условия."""
-    column, operation = condition.split("=")
+    column, operation = condition.split('=')
 
     if not data:
-        raise DataError("Данные пусты")
+        raise DataError('Данные пусты')
 
     if not is_numeric_column(data, column):
-        raise IsNumericColumnError(f"Столбец '{column}' не является числовым")
+        raise IsNumericColumnError(f'Столбец "{column}" не является числовым')
 
     result = get_aggregate_data(data, column)
 
     if operation not in result.keys():
         raise DataAggregateError(
-            f"Неподдерживаемая операция '{operation}'. "
-            f"Используйте: {', '.join(result.keys())}"
+            f'Неподдерживаемая операция "{operation}". '
+            f'Используйте: {", ".join(result.keys())}'
         )
 
     return [{f"{operation}": f"{result[operation]:.2f}"}]
@@ -85,7 +85,7 @@ def main():
         args = parser.parse_args()
 
         if not args.file:
-            raise DataError("Не указан файл")
+            raise DataError('Не указан файл')
 
         data = read_csv(args.file)
 
@@ -98,11 +98,11 @@ def main():
         if args.aggregate:
             data = aggregate_data(data, args.aggregate)
 
-        print(tabulate(data, headers="keys", tablefmt="grid"))
+        print(tabulate(data, headers='keys', tablefmt='grid'))
 
     except Exception as e:
-        print(f"Ошибка: {e}")
+        print(f'Ошибка: {e}')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
