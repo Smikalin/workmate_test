@@ -20,6 +20,8 @@ git clone https://github.com/Smikalin/workmate_test.git
 2. Создайте и активируйте виртуальное окружение:
 ```bash
 python -m venv venv
+```
+```bash
 source venv/Scripts/activate
 ```
 
